@@ -14,12 +14,12 @@ PrgP: Liverpool (Avg: 83.95)
 PrgR: Liverpool (Avg: 83.05)
 per90_Gls: Manchester City (Avg: 0.18)
 per90_Ast: Liverpool (Avg: 0.14)
-per90_xG: Liverpool (Avg: 0.30)
-per90_xAG: Manchester City (Avg: 0.18)
-SoT%: Liverpool (Avg: 3.81)
-SoT/90: Liverpool (Avg: 28.05)
-G/Sh: Liverpool (Avg: 9.52)
-Dist: Nott'ham Forest (Avg: 39.05)
+per90_xG: Aston Villa (Avg: 0.19)
+per90_xAG: Chelsea (Avg: 0.15)
+SoT%: Nott'ham Forest (Avg: 39.05)
+SoT/90: Bournemouth (Avg: 0.54)
+G/Sh: Arsenal (Avg: 0.14)
+Dist: Nott'ham Forest (Avg: 19.12)
 Pass_Cmp: Liverpool (Avg: 807.14)
 Pass_Cmp%: Manchester City (Avg: 86.50)
 TotDist: Liverpool (Avg: 13712.95)
@@ -72,5 +72,5 @@ Aerial_Won%: Brentford (Avg: 54.89)
 
 Performance Analysis:
 Dựa trên phân tích, Liverpool dường như đang thi đấu tốt nhất trong mùa giải Ngoại hạng Anh 2024-2025.
-Họ dẫn đầu ở 30 trên tổng số 70 hạng mục thống kê.
+Họ dẫn đầu ở 26 trên tổng số 70 hạng mục thống kê.
 Điều này cho thấy một màn trình diễn mạnh mẽ trên nhiều phương diện của trận đấu, bao gồm hiệu suất tấn công, khả năng triển khai bóng lên phía trước, và sự tham gia tổng thể vào các trận đấu.

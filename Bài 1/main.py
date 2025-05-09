@@ -171,8 +171,8 @@ class Player:
     def setPer90(self, arr):
         self.per_90["Gls"] = arr[0]
         self.per_90["Ast"] = arr[1]
-        self.per_90["xG"] = arr[2]
-        self.per_90["xAG"] = arr[3]
+        self.per_90["xG"] = arr[5]
+        self.per_90["xAG"] = arr[6]
 
     def setGoalkeeping(self, performance_arr, penalty_arr):
         self.goalkeeping["Performance"]["GA90"] = performance_arr[1]
@@ -181,10 +181,10 @@ class Player:
         self.goalkeeping["Penalty Kicks"]["Save%"] = penalty_arr[4]
 
     def setShooting(self, arr):
-        self.shooting["SoT%"] = arr[0]
-        self.shooting["SoT/90"] = arr[1]
-        self.shooting["G/Sh"] = arr[2]
-        self.shooting["Dist"] = arr[3]
+        self.shooting["SoT%"] = arr[3]
+        self.shooting["SoT/90"] = arr[5]
+        self.shooting["G/Sh"] = arr[6]
+        self.shooting["Dist"] = arr[8]
 
     def setPassing(self, total_arr, short_arr, medium_arr, long_arr, expected_arr):
         self.passing["Total"]["Cmp"] = total_arr[0]
@@ -279,6 +279,7 @@ header_player = [
     "name", "nation", "team", "position", "age",
     "matches_played", "starts", "minutes",
     "goals", "assists", "yellow_cards", "red_cards",
+    "GA90", "Save%", "CS%", "PK_Save%"
     "xG", "xAG",
     "PrgC", "PrgP", "PrgR",
     "per90_Gls", "per90_Ast", "per90_xG", "per90_xAG",
@@ -302,6 +303,10 @@ def row_player(player):
         player.playing_time["matches_played"], player.playing_time["starts"], player.playing_time["minutes"],
         player.performance["goals"], player.performance["assists"], player.performance["yellow_cards"], player.performance["red_cards"],
         player.expected["xG"], player.expected["xAG"],
+        player.goalkeeping["Performance"]["GA90"], 
+        player.goalkeeping["Performance"]["Save%"], 
+        player.goalkeeping["Performance"]["CS%"],
+        player.goalkeeping["Penalty Kicks"]["Save%"],
         player.progression["PrgC"], player.progression["PrgP"], player.progression["PrgR"],
         player.per_90["Gls"], player.per_90["Ast"], player.per_90["xG"], player.per_90["xAG"],
         player.shooting["SoT%"], player.shooting["SoT/90"], player.shooting["G/Sh"], player.shooting["Dist"],
