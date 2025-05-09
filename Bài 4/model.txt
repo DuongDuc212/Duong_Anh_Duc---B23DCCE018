@@ -1,0 +1,102 @@
+Phương Pháp Ước Tính Giá Trị Chuyển Nhượng Cầu Thủ Bóng Đá
+
+1. Tổng Quan
+Tài liệu này trình bày một phương pháp để ước tính giá trị chuyển nhượng của các cầu thủ bóng đá bằng cách sử dụng học máy. Phương pháp này tận dụng các số liệu thống kê về hiệu suất, độ tuổi và các yếu tố ngữ cảnh để dự đoán giá trị thị trường. Phương pháp được thiết kế dựa trên tập dữ liệu có sẵn trong 'result.csv' và 'premier_league_player_values.csv'.
+
+2. Lựa Chọn Đặc Trưng
+Các đặc trưng dưới đây được chọn để phản ánh hiệu suất, tiềm năng và các yếu tố thị trường của cầu thủ:
+
+- Đặc Trưng Hiệu Suất Trên Sân:
+  - goals: Số bàn thắng ghi được, rất quan trọng đối với các cầu thủ tấn công.
+  - assists: Số lần kiến tạo, thể hiện khả năng hỗ trợ đồng đội.
+  - xG: Bàn thắng kỳ vọng, đo lường chất lượng cơ hội ghi bàn.
+  - xAG: Kiến tạo kỳ vọng, đo lường chất lượng cơ hội tạo ra.
+  - PrgC: Số lần mang bóng tiến lên, thể hiện đóng góp vào lối chơi tấn công.
+  - PrgP: Số lần chuyền bóng tiến lên, thể hiện khả năng triển khai bóng.
+  - PrgR: Số lần nhận bóng tiến lên, phản ánh mức độ tham gia vào khu vực tấn công.
+  - minutes: Tổng số phút thi đấu, cho thấy sự ổn định và tầm quan trọng của cầu thủ.
+  - per90_Gls: Số bàn thắng mỗi 90 phút, chuẩn hóa để so sánh công bằng.
+  - per90_Ast: Số kiến tạo mỗi 90 phút, chuẩn hóa để so sánh công bằng.
+  - yellow_cards: Số thẻ vàng, thể hiện tính kỷ luật.
+  - red_cards: Số thẻ đỏ, có thể ảnh hưởng tiêu cực đến giá trị.
+
+- Đặc Trưng Tiềm Năng và Tuổi Tác:
+  - age: Tuổi của cầu thủ, yếu tố quan trọng ảnh hưởng đến giá trị (cầu thủ trẻ thường có giá trị cao hơn).
+  - age_squared: Bình phương của tuổi, để mô hình hóa mối quan hệ phi tuyến giữa tuổi và giá trị.
+
+- Đặc Trưng Ngữ Cảnh:
+  - position: Vị trí thi đấu (ví dụ: tiền đạo, tiền vệ), được mã hóa thành biến giả.
+  - team: Đội bóng của cầu thủ, được mã hóa thành biến giả hoặc một chỉ số uy tín của đội.
+
+3. Lựa Chọn Mô Hình
+Mô hình được chọn là Hồi Quy Random Forest (Random Forest Regression) vì các lý do sau:
+- Xử lý được mối quan hệ phi tuyến giữa các đặc trưng và giá trị chuyển nhượng.
+- Có khả năng xử lý nhiều đặc trưng mà không bị ảnh hưởng bởi hiện tượng đa cộng tuyến.
+- Cung cấp điểm số tầm quan trọng của đặc trưng, giúp hiểu yếu tố nào ảnh hưởng lớn đến giá trị.
+- Giảm nguy cơ quá khớp nhờ cơ chế bagging và lựa chọn đặc trưng ngẫu nhiên.
+
+Các mô hình thay thế:
+- Hồi Quy Tuyến Tính (Linear Regression): Đơn giản hơn nhưng kém hiệu quả nếu mối quan hệ phi tuyến.
+- Hồi Quy Gradient Boosting (ví dụ: XGBoost): Cho độ chính xác cao hơn với tập dữ liệu lớn.
+
+4. Quy Trình Thực Hiện
+Quy trình xây dựng và sử dụng mô hình bao gồm các bước sau:
+
+- Chuẩn Bị Dữ Liệu:
+  - Đọc dữ liệu từ 'result.csv' và 'premier_league_player_values.csv'.
+  - Xử lý giá trị thiếu: Điền giá trị trung bình/trung vị cho các cột số, loại bỏ hàng thiếu giá trị mục tiêu (giá trị chuyển nhượng).
+  - Mã hóa các đặc trưng phân loại (position, team) bằng cách sử dụng mã hóa one-hot.
+  - Thêm đặc trưng phái sinh: age_squared.
+  - Chuẩn hóa các đặc trưng số bằng StandardScaler.
+
+- Huấn Luyện Mô Hình:
+  - Chia dữ liệu thành tập huấn luyện (80%) và tập kiểm tra (20%).
+  - Huấn luyện mô hình Random Forest Regressor với 100 cây quyết định.
+  - Đánh giá mô hình bằng các chỉ số như Sai Số Bình Phương Trung Bình (MSE), Sai Số Tuyệt Đối Trung Bình (MAE), và Hệ Số Xác Định (R²).
+
+- Dự Đoán và Phân Tích:
+  - Dự đoán giá trị chuyển nhượng trên tập kiểm tra.
+  - Phân tích tầm quan trọng của đặc trưng để xác định các yếu tố chính ảnh hưởng đến giá trị.
+  - So sánh giá trị dự đoán với giá trị thực tế (nếu có).
+
+5. Mã Ví Dụ
+Dưới đây là một đoạn mã Python ví dụ để triển khai mô hình:
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Đọc dữ liệu
+df = pd.read_csv('result.csv')
+df_values = pd.read_csv('premier_league_player_values.csv')
+df = df.merge(df_values, on=['Player', 'Team'], how='inner')
+
+# Chọn đặc trưng
+features = ['age', 'goals', 'assists', 'xG', 'xAG', 'PrgC', 'PrgP', 'PrgR', 'minutes', 'per90_Gls', 'per90_Ast']
+X = df[features]
+y = df['Transfer Value'].str.extract(r'(\d+\.?\d*)').astype(float)
+
+# Xử lý giá trị thiếu
+X = X.fillna(X.mean())
+
+# Chuẩn hóa đặc trưng
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Chia dữ liệu
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+# Huấn luyện mô hình
+model = RandomForestRegressor(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+# Dự đoán và đánh giá
+y_pred = model.predict(X_test)
+print(f"MSE: {mean_squared_error(y_test, y_pred):.2f}")
+print(f"R²: {r2_score(y_test, y_pred):.2f}")
+
+# Tầm quan trọng của đặc trưng
+feature_importance = pd.DataFrame({'Feature': features, 'Importance': model.feature_importances_})
+print(feature_importance.sort_values(by='Importance', ascending=False))
